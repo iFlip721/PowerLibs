@@ -1,0 +1,133 @@
+- galAccordion:
+    Control: Gallery@2.15.0
+    Variant: BrowseLayout_Flexible_SocialFeed_ver5.0
+    Properties:
+      BorderColor: =RGBA(229, 231, 235, 1)
+      Height: =351
+      Items: |-
+        =[
+          {
+            id: 1,
+            title: "How do I import custom icons?",
+            body: "Easy. Go to powericons.dev, click an icon, and paste the YAML directly into your Power App."
+          },
+          {
+            id: 2,
+            title: "Where can I learn more Power Apps design tricks?",
+            body: "Head over to dennisdoer.com/blog. I share practical UI tips, tutorials, and example apps there."
+          },
+          {
+            id: 3,
+            title: "Why do most Power Apps look outdated?",
+            body: "Because most developers don't focus on design. That's why I'm sharing tricks to make apps look modern with less effort."
+          }
+        ]
+      ShowScrollbar: =false
+      TemplatePadding: =5
+      TemplateSize: =127
+      Width: =502
+      X: =195
+      Y: =135
+    Children:
+      - lblBody:
+          Control: Label@2.5.1
+          Properties:
+            AutoHeight: =true
+            BorderColor: =RGBA(229, 231, 235, 1)
+            Color: =RGBA(55, 65, 81, 1)
+            Font: =Font.'Open Sans'
+            Height: =100
+            OnSelect: =Select(Parent)
+            PaddingLeft: =15
+            Size: =10
+            Text: =ThisItem.body
+            Visible: =varOpenAccordionItemId = ThisItem.id
+            Width: =galAccordion.TemplateWidth - icoArrow.Width
+            Y: =27
+      - lblTitle:
+          Control: Label@2.5.1
+          Properties:
+            BorderColor: =RGBA(229, 231, 235, 1)
+            Color: =RGBA(17, 24, 39, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Semibold
+            Height: =31
+            PaddingLeft: =15
+            Size: =11
+            Text: =ThisItem.title
+            Width: =galAccordion.TemplateWidth
+      - icoArrow:
+          Control: Image@2.2.3
+          Properties:
+            BorderColor: =RGBA(229, 231, 235, 1)
+            Height: =20
+            Image: |
+              ="data:image/svg+xml," & EncodeUrl(
+                  "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='40px' height='40px'>
+                    <style>
+                      .arrow" & ThisItem.id & "_" & LookUp(varColAnimationTriggers, itemID = ThisItem.id).timestamp & " {
+                        stroke: black;
+                        stroke-width: 1.5;
+                        stroke-linecap: round;
+                        stroke-linejoin: round;
+                        fill: none;
+                        transform-origin: center;
+                        animation-name: rotateArrow" & ThisItem.id & "_" & LookUp(varColAnimationTriggers, itemID = ThisItem.id).timestamp & ";
+                        animation-duration: " & If(IsBlank(LookUp(varColAnimationTriggers, itemID = ThisItem.id).timestamp), "0ms", "400ms") & ";
+                        animation-fill-mode: both;
+                      }
+
+                      @keyframes rotateArrow" & ThisItem.id & "_" & LookUp(varColAnimationTriggers, itemID = ThisItem.id).timestamp & " {
+                        " & If(varOpenAccordionItemId = ThisItem.id, "0%", "100%") & " {
+                          transform: rotate(0deg);
+                          d: path('m4.5 15.75 7.5-7.5 7.5 7.5');
+                        }
+                        " & If(varOpenAccordionItemId = ThisItem.id, "100%", "0%") & " {
+                          transform: rotate(180deg);
+                          d: path('m4.5 15.75 7.5-7.5 7.5 7.5');
+                        }
+                      }
+                    </style>
+
+                    <path class='arrow" & ThisItem.id & "_" & LookUp(varColAnimationTriggers, itemID = ThisItem.id).timestamp & "' d='m4.5 15.75 7.5-7.5 7.5 7.5' />
+                  </svg>"
+              )
+            OnSelect: =
+            Width: =20
+            X: =Parent.Width - Self.Width - 15
+            Y: =5.5
+      - btnAccordion:
+          Control: Classic/Button@2.2.0
+          Properties:
+            Align: =Align.Left
+            BorderColor: =RGBA(229, 231, 235, 1)
+            BorderStyle: =BorderStyle.None
+            Color: =RGBA(17, 24, 39, 1)
+            DisabledBorderColor: =RGBA(166, 166, 166, 1)
+            DisabledColor: =RGBA(17, 24, 39, 1)
+            Fill: =RGBA(0, 0, 0, 0)
+            Font: =Font.'Open Sans'
+            Height: =If(varOpenAccordionItemId = ThisItem.id, lblTitle.Height + lblBody.Height, lblTitle.Height)
+            HoverBorderColor: =RGBA(229, 231, 235, 1)
+            HoverColor: =RGBA(17, 24, 39, 1)
+            HoverFill: =RGBA(0, 0, 0, 0)
+            OnSelect: |
+              =UpdateContext({ varOpenAccordionItemId: If(varOpenAccordionItemId = ThisItem.id, Blank(), ThisItem.id) });
+              // Remove existing trigger for this item, if any
+              RemoveIf(varColAnimationTriggers, itemID = ThisItem.id);
+              // Add a new trigger with the current timestamp
+              Collect(varColAnimationTriggers, { itemID: ThisItem.id, timestamp: Text(Now(), "yyyymmddhhmmss") });
+            PaddingLeft: =20
+            PaddingRight: =20
+            PressedBorderColor: =RGBA(229, 231, 235, 1)
+            PressedColor: =RGBA(17, 24, 39, 1)
+            PressedFill: =RGBA(0, 0, 0, 0)
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Size: =11
+            Text: |-
+              ="
+              "
+            Width: =492
