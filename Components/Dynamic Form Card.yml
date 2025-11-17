@@ -1,0 +1,135 @@
+- conFormCardContainer:
+    Control: GroupContainer@1.3.0
+    Variant: ManualLayout
+    Properties:
+      DropShadow: =DropShadow.Regular
+      Fill: =RGBA(255, 255, 255, 1)
+      Height: =btnCancel.Y + btnCancel.Height + 20
+      RadiusBottomLeft: =15
+      RadiusBottomRight: =15
+      RadiusTopLeft: =15
+      RadiusTopRight: =15
+      Width: =387
+      X: =465
+      Y: =114
+    Children:
+      - lblTitle:
+          Control: Label@2.5.1
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Color: =RGBA(0, 0, 0, 1)
+            Font: =Font.'Open Sans'
+            FontWeight: =FontWeight.Bold
+            Height: =27
+            Text: ="Deploy to production"
+            Width: =Parent.Width * 0.9
+            X: =Parent.Width * 0.05
+            Y: =20
+      - lblTitle2:
+          Control: Label@2.5.1
+          Properties:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Color: =RGBA(128, 128, 128, 1)
+            Font: =Font.'Open Sans'
+            Height: =28
+            Size: =10
+            Text: ="This will publish your changes live to all users"
+            Width: =Parent.Width * 0.9
+            X: =Parent.Width * 0.05
+            Y: =lblTitle.Y + lblTitle.Height
+      - galFormFields:
+          Control: Gallery@2.15.0
+          Variant: Vertical
+          Properties:
+            Height: =galFormFields.AllItemsCount * (galFormFields.TemplateHeight +10)
+            Items: |
+              =Table(
+                { id: 1, labelText: "Project name", hintText: "My awesome project" },
+                { id: 2, labelText: "Environment", hintText: "Production" }
+              )
+            ShowScrollbar: =false
+            TemplateSize: =80
+            Width: =Parent.Width * 0.9
+            X: =Parent.Width * 0.05
+            Y: =lblTitle2.Y + lblTitle2.Height + 10
+          Children:
+            - lblFieldLabel:
+                Control: Label@2.5.1
+                Properties:
+                  Color: =RGBA(0, 0, 0, 1)
+                  Font: =Font.'Open Sans'
+                  FontWeight: =FontWeight.Semibold
+                  Height: =22
+                  Size: =10
+                  Text: =ThisItem.labelText
+                  Width: =Parent.TemplateWidth
+                  Y: =5
+            - txtFieldValue:
+                Control: Classic/TextInput@2.3.2
+                Properties:
+                  BorderColor: =RGBA(201, 201, 201, 1)
+                  BorderThickness: =1
+                  Color: =RGBA(0, 0, 0, 1)
+                  Default: =LookUp(colFormValues, id = ThisItem.id).value
+                  Fill: =RGBA(255, 255, 255, 1)
+                  FocusedBorderThickness: =2
+                  Font: =Font.'Open Sans'
+                  Height: =32
+                  HintText: =ThisItem.hintText
+                  HoverBorderColor: =Self.BorderColor
+                  HoverFill: =RGBA(249, 250, 251, 1)
+                  OnChange: |
+                    =// Remove existing value for this item, if any
+                    RemoveIf(colFormValues, id = ThisItem.id);
+                    // Add the new value
+                    Collect(colFormValues, { id: ThisItem.id, value: Self.Text });
+                  PressedBorderColor: =RGBA(135, 135, 135, 1)
+                  PressedFill: =ColorFade(Self.HoverFill, -10%)
+                  Size: =9
+                  Width: =Parent.TemplateWidth
+                  Y: =lblFieldLabel.Y + lblFieldLabel.Height + 4
+      - btnDeploy:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderStyle: =BorderStyle.None
+            Color: =RGBA(255, 255, 255, 1)
+            Fill: =RGBA(59, 130, 246, 1)
+            Height: =30
+            HoverBorderColor: =ColorFade(Self.BorderColor, -20%)
+            HoverColor: =Self.Color
+            HoverFill: =ColorFade(Self.Fill, -10%)
+            PressedBorderColor: =ColorFade(Self.BorderColor, -40%)
+            PressedFill: =ColorFade(Self.Fill, -20%)
+            RadiusBottomLeft: =5
+            RadiusBottomRight: =5
+            RadiusTopLeft: =5
+            RadiusTopRight: =5
+            Size: =11
+            Text: ="Deploy"
+            Width: =(Parent.Width - (Parent.Width - lblTitle.Width))/2 - 5
+            X: =lblTitle.X
+            Y: =galFormFields.Y + galFormFields.Height + 20
+      - btnCancel:
+          Control: Classic/Button@2.2.0
+          Properties:
+            BorderColor: =RGBA(219, 219, 219, 1)
+            BorderThickness: =1
+            Color: =RGBA(0, 0, 0, 1)
+            Fill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =1
+            Height: =30
+            HoverBorderColor: =ColorFade(Self.BorderColor, -10%)
+            HoverColor: =Self.Color
+            HoverFill: =RGBA(219, 219, 219, 1)
+            PressedBorderColor: =ColorFade(Self.BorderColor, -20%)
+            PressedColor: =RGBA(0, 0, 0, 1)
+            PressedFill: =ColorFade(Self.HoverFill, -10%)
+            RadiusBottomLeft: =5
+            RadiusBottomRight: =5
+            RadiusTopLeft: =5
+            RadiusTopRight: =5
+            Size: =11
+            Text: ="Cancel"
+            Width: =(Parent.Width - (Parent.Width - lblTitle.Width))/2 - 5
+            X: =lblTitle.X + lblTitle.Width - Self.Width
+            Y: =galFormFields.Y + galFormFields.Height + 20
