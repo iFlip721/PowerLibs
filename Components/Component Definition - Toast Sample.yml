@@ -1,0 +1,14 @@
+- Toast__1:
+    Control: CanvasComponent
+    ComponentName: Toast_
+    Properties:
+      Height: =175
+      ShowToast: =ShowToast
+      SuccessToast: =toastProperties.IsSuccess
+      ToastDuration: =7500
+      ToastMessageBody: =toastProperties.ToastMessageBody
+      ToastMessageHeader: =toastProperties.ToastMessageHeader
+      Visible: =Self.HideToast
+      Width: =500
+      X: =Parent.Width - Self.Width
+      Y: =Parent.Height - Self.Height
